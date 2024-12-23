@@ -20,6 +20,7 @@ import {
 export const Form = () => {
   const { register, handleSubmit, watch } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: { price: { type: PriceType.Range } },
   })
 
   const saveData = (data: FormData) => {
@@ -47,7 +48,7 @@ export const Form = () => {
           </FormControl>
           <FormControl>
             <FormLabel>Price Type</FormLabel>
-            <RadioGroup>
+            <RadioGroup defaultValue={priceType}>
               <Stack direction="row" spacing={4}>
                 <Radio
                   id="fixed"
