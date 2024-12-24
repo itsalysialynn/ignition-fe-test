@@ -22,9 +22,10 @@ const rangePriceSchema = z.object({
 export const formSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, 'String must contain at least 1 character(s)')
     .max(10, 'String must contain at most 10 character(s)'),
-  email: z.string().email('Invalid email'),
+  email: z.string().trim().toLowerCase().email('Invalid email'),
   price: z
     .discriminatedUnion('type', [fixedPriceSchema, rangePriceSchema])
     .optional(),
