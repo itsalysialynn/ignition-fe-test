@@ -1,27 +1,18 @@
-import { useForm } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { formSchema } from './schema'
 import { FormData } from './types/FormData'
 import { PriceType } from './types/PriceType'
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  Radio,
-  RadioGroup,
-  Button,
-  Box,
-  Stack,
-  VStack,
-  InputGroup,
-  InputLeftAddon,
-} from '@chakra-ui/react'
+import { Radio, RadioGroup, Button, Box, Stack, VStack } from '@chakra-ui/react'
+import { FormInput } from './ui/FormInput'
 
 export const Form = () => {
-  const { register, handleSubmit, watch } = useForm<FormData>({
+  const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { price: { type: PriceType.Range } },
   })
+
+  const { watch, handleSubmit } = methods
 
   const saveData = (data: FormData) => {
     console.log(data)
@@ -30,30 +21,18 @@ export const Form = () => {
   const priceType = watch('price.type')
 
   return (
-    <Box maxW="lg" mx="auto" p={{ base: 4, md: 8 }}>
-      <form onSubmit={handleSubmit(saveData)}>
-        <VStack spacing={4} align="stretch">
-          <FormControl>
-            <FormLabel htmlFor="name">Name</FormLabel>
-            <Input
-              id="name"
-              autoFocus
-              data-testid="name"
-              {...register('name')}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <Input id="email" data-testid="email" {...register('email')} />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Price Type</FormLabel>
+    <FormProvider {...methods}>
+      <Box maxW="lg" mx="auto" p={{ base: 4, md: 8 }}>
+        <form onSubmit={handleSubmit(saveData)}>
+          <VStack spacing={4} align="stretch">
+            <FormInput id="name" label="Name" name="name" autoFocus />
+            <FormInput id="email" label="Email" name="email" />
             <RadioGroup defaultValue={priceType}>
               <Stack direction="row" spacing={4}>
                 <Radio
                   id="fixed"
                   value={PriceType.Fixed}
-                  {...register('price.type')}
+                  {...methods.register('price.type')}
                   data-testid="fixed-type"
                 >
                   Fixed
@@ -61,70 +40,55 @@ export const Form = () => {
                 <Radio
                   id="range"
                   value={PriceType.Range}
-                  {...register('price.type')}
+                  {...methods.register('price.type')}
                   data-testid="range-type"
                 >
                   Range
                 </Radio>
               </Stack>
             </RadioGroup>
-          </FormControl>
-          {priceType === PriceType.Fixed && (
-            <FormControl>
-              <FormLabel htmlFor="fixedAmount">Amount</FormLabel>
-              <InputGroup>
-                <InputLeftAddon>$</InputLeftAddon>
-                <Input
-                  id="fixedAmount"
-                  data-testid="fixed-amount"
+            {priceType === PriceType.Fixed && (
+              <FormInput
+                id="fixed-amount"
+                label="Amount"
+                name="price.amount"
+                type="number"
+                leftAddon="$"
+              />
+            )}
+            {priceType === PriceType.Range && (
+              <Stack
+                spacing={4}
+                direction={{ base: 'column', md: 'row' }}
+                width="100%"
+              >
+                <FormInput
+                  id="min-amount"
+                  label="Min"
+                  name="price.amount.min"
                   type="number"
-                  {...register('price.amount')}
+                  leftAddon="$"
                 />
-              </InputGroup>
-            </FormControl>
-          )}
-          {priceType === PriceType.Range && (
-            <Stack
-              spacing={4}
-              direction={{ base: 'column', md: 'row' }}
+                <FormInput
+                  id="max-amount"
+                  label="Max"
+                  name="price.amount.max"
+                  type="number"
+                  leftAddon="$"
+                />
+              </Stack>
+            )}
+            <Button
+              type="submit"
+              data-testid="submit-button"
+              colorScheme="blue"
               width="100%"
             >
-              <FormControl>
-                <FormLabel htmlFor="min">Min</FormLabel>
-                <InputGroup>
-                  <InputLeftAddon>$</InputLeftAddon>
-                  <Input
-                    id="min"
-                    data-testid="min-amount"
-                    type="number"
-                    {...register('price.amount.min')}
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="max">Max</FormLabel>
-                <InputGroup>
-                  <InputLeftAddon>$</InputLeftAddon>
-                  <Input
-                    id="max"
-                    data-testid="max-amount"
-                    type="number"
-                    {...register('price.amount.max')}
-                  />
-                </InputGroup>
-              </FormControl>
-            </Stack>
-          )}
-          <Button
-            type="submit"
-            data-testid="submit-button"
-            colorScheme="blue"
-            width="100%"
-          >
-            Submit
-          </Button>
-        </VStack>
-      </form>
-    </Box>
+              Submit
+            </Button>
+          </VStack>
+        </form>
+      </Box>
+    </FormProvider>
   )
 }
