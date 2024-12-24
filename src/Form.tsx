@@ -54,6 +54,7 @@ export const Form = () => {
                 name="price.amount"
                 type="number"
                 leftAddon="$"
+                registerOptions={{ valueAsNumber: true }}
               />
             )}
             {priceType === PriceType.Range && (
@@ -68,6 +69,7 @@ export const Form = () => {
                   name="price.amount.min"
                   type="number"
                   leftAddon="$"
+                  registerOptions={{ valueAsNumber: true }}
                 />
                 <FormInput
                   id="max-amount"
@@ -75,6 +77,7 @@ export const Form = () => {
                   name="price.amount.max"
                   type="number"
                   leftAddon="$"
+                  registerOptions={{ valueAsNumber: true }}
                 />
               </Stack>
             )}

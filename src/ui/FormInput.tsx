@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
@@ -8,6 +9,7 @@ import {
   InputProps as ChakraInputProps,
 } from '@chakra-ui/react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
+import { get } from 'lodash'
 
 interface FormInputProps extends ChakraInputProps {
   id: string
@@ -25,10 +27,19 @@ export const FormInput: React.FC<FormInputProps> = ({
   registerOptions,
   ...props
 }) => {
-  const { register } = useFormContext()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext()
+
+  const fieldError = get(errors, name)
+  const fieldErrorMessage =
+    fieldError && typeof fieldError.message === 'string'
+      ? fieldError.message
+      : undefined
 
   return (
-    <FormControl>
+    <FormControl isInvalid={!!fieldErrorMessage}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <InputGroup>
         {leftAddon && (
@@ -41,6 +52,9 @@ export const FormInput: React.FC<FormInputProps> = ({
           {...props}
         />
       </InputGroup>
+      {fieldErrorMessage && (
+        <FormErrorMessage>{fieldErrorMessage}</FormErrorMessage>
+      )}
     </FormControl>
   )
 }
