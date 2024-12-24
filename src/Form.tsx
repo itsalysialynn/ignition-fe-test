@@ -69,6 +69,7 @@ export const Form = () => {
                 name="price.amount"
                 type="number"
                 leftAddon="$"
+                step="0.01"
                 registerOptions={{ valueAsNumber: true }}
                 isDisabled={isSubmitting}
               />
@@ -85,6 +86,7 @@ export const Form = () => {
                   name="price.amount.min"
                   type="number"
                   leftAddon="$"
+                  step="0.01"
                   registerOptions={{ valueAsNumber: true }}
                   isDisabled={isSubmitting}
                 />
@@ -94,6 +96,7 @@ export const Form = () => {
                   name="price.amount.max"
                   type="number"
                   leftAddon="$"
+                  step="0.01"
                   registerOptions={{ valueAsNumber: true }}
                   isDisabled={isSubmitting}
                 />
