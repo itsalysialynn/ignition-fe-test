@@ -10,6 +10,7 @@ export const Form = () => {
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { price: { type: PriceType.Range } },
+    shouldFocusError: true,
   })
 
   const {
