@@ -35,12 +35,14 @@ export const Form = () => {
               name="name"
               autoFocus
               isDisabled={isSubmitting}
+              autoComplete="name"
             />
             <FormInput
               id="email"
               label="Email"
               name="email"
               isDisabled={isSubmitting}
+              autoComplete="email"
             />
             <RadioGroup defaultValue={priceType}>
               <Stack direction="row" spacing={4}>
