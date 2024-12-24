@@ -3,8 +3,9 @@ import { PriceType } from './types/PriceType'
 
 /**
  * Additional considerations not implemented:
- * - Transform amounts to cents before sending to the API to enhance precision.
- * - Adding validation to ensure that the amount fields accept only up to two decimal places.
+ * - Transform amounts to cents before sending to the API for enhanced precision.
+ * - If the API does not accept cents, transform all amounts to consistently send two decimal places.
+ * - Add validation to ensure that the amount fields accept only up to two decimal places.
  */
 
 const fixedPriceSchema = z.object({
