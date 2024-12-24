@@ -12,7 +12,11 @@ export const Form = () => {
     defaultValues: { price: { type: PriceType.Range } },
   })
 
-  const { watch, handleSubmit } = methods
+  const {
+    watch,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods
 
   const saveData = (data: FormData) => {
     console.log(data)
@@ -25,8 +29,19 @@ export const Form = () => {
       <Box maxW="lg" mx="auto" p={{ base: 4, md: 8 }}>
         <form onSubmit={handleSubmit(saveData)}>
           <VStack spacing={4} align="stretch">
-            <FormInput id="name" label="Name" name="name" autoFocus />
-            <FormInput id="email" label="Email" name="email" />
+            <FormInput
+              id="name"
+              label="Name"
+              name="name"
+              autoFocus
+              isDisabled={isSubmitting}
+            />
+            <FormInput
+              id="email"
+              label="Email"
+              name="email"
+              isDisabled={isSubmitting}
+            />
             <RadioGroup defaultValue={priceType}>
               <Stack direction="row" spacing={4}>
                 <Radio
@@ -55,6 +70,7 @@ export const Form = () => {
                 type="number"
                 leftAddon="$"
                 registerOptions={{ valueAsNumber: true }}
+                isDisabled={isSubmitting}
               />
             )}
             {priceType === PriceType.Range && (
@@ -70,6 +86,7 @@ export const Form = () => {
                   type="number"
                   leftAddon="$"
                   registerOptions={{ valueAsNumber: true }}
+                  isDisabled={isSubmitting}
                 />
                 <FormInput
                   id="max-amount"
@@ -78,6 +95,7 @@ export const Form = () => {
                   type="number"
                   leftAddon="$"
                   registerOptions={{ valueAsNumber: true }}
+                  isDisabled={isSubmitting}
                 />
               </Stack>
             )}
@@ -86,6 +104,7 @@ export const Form = () => {
               data-testid="submit-button"
               colorScheme="blue"
               width="100%"
+              isLoading={isSubmitting}
             >
               Submit
             </Button>
