@@ -1,5 +1,11 @@
 import { z } from 'zod'
-import { PriceType } from './types/PriceType.ts'
+import { PriceType } from './types/PriceType'
+
+/**
+ * Additional considerations not implemented:
+ * - Transform amounts to cents before sending to the API to enhance precision.
+ * - Adding validation to ensure that the amount fields accept only up to two decimal places.
+ */
 
 const fixedPriceSchema = z.object({
   type: z.literal(PriceType.Fixed),
